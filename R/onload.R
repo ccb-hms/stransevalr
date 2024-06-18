@@ -16,5 +16,8 @@ sentence_transformers <- NULL
     numpy <<- reticulate::import("numpy", delay_load = TRUE)
     random <<- reticulate::import("random", delay_load = TRUE)
     sentence_transformers <<- reticulate::import("sentence_transformers", delay_load = TRUE)
+}
 
+.onAttach = function(libname, pkgname) {
+    cli::cli_alert_success('stransevalr')
 }

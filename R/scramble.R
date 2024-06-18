@@ -12,9 +12,8 @@ sample_n_words = function(baseline) {
     n_word = strsplit(baseline, " ")[[1]] |>
         length()
 
-    words |>
-        slice_sample(n = n_word) |>
-        pull(word) |>
+    words::words[sample(nrow(words::words),
+                        n_word),]$word |>
         paste(collapse = " ")
 }
 
@@ -37,4 +36,37 @@ sample_n_char = function(baseline, word_df) {
     }
 
     paste0(word_vec[1:i], collapse = " ")
+}
+
+multi_scramble = function(qa_dt, tmp_dir) {
+
+    resp_word_df = qa_dt$answer |>
+        paste0(collapse = " ") |>
+        strsplit(split = " ") |>
+        getElement(1) |>
+        data.table(word = _)
+
+    qa_dt[,`:=`(scrambled_answer = vapply(answer,
+                                          scramble,
+                                          FUN.VALUE = "blah"),
+                scrambled_combined_answers = vapply(answer,
+                                                    sample_n_char,
+                                                    word_df = resp_word_df,
+                                                    FUN.VALUE = "blah"),
+                scrabble_match_nword = vapply(answer,
+                                              sample_n_words,
+                                              FUN.VALUE = "blah"),
+                scrabble_match_nchar = vapply(answer,
+                                              sample_n_char,
+                                              word_df = words::words,
+                                              FUN.VALUE = "blah"),
+                reembed_ground_truth = answer)][]
+
+
+    fwrite(qa_dt,
+           file = fs::path(tmp_dir, 'scrambled', ext = "tsv"),
+           quote = TRUE,
+           sep = "\t")
+
+    qa_dt
 }
