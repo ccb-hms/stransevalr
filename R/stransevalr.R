@@ -7,7 +7,7 @@ tmp_dir_helper = function(tmp_dir, call = rlang::caller_env()) {
     tmp_dir
 }
 
-sent_trans_eval = function(scramble_dt, tmp_dir) {
+run_sent_trans = function(scramble_dt, tmp_dir) {
 
 }
 
@@ -20,7 +20,7 @@ stransevalr = function(input, tmp_dir = NULL) {
     res = input |>
         read_input() |>
         multi_scramble(tmp_dir = tmp_dir) |>
-        sent_trans_eval()
+        run_sent_trans()
 
     if (cleanup) fs::dir_delete(tmp_dir)
 
