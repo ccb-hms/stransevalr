@@ -31,7 +31,7 @@ remotes::install_github("ccb-hms/stransevalr")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to create the virtual environment with reticulate if needed, then analyze an input question-answer-response file. The first column must be named `question`, the seconde must be `answer`, and the remaining columns should have names indicating the model they came from e.g. `llama_70b_rag`:
 
 ```{r example, eval=FALSE}
 library(reticulate)
