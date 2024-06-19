@@ -38,7 +38,7 @@ sample_n_char = function(baseline, word_df) {
     paste0(word_vec[1:i], collapse = " ")
 }
 
-multi_scramble = function(qa_dt, tmp_dir) {
+multi_scramble = function(qa_dt) {
 
     resp_word_df = qa_dt$answer |>
         paste0(collapse = " ") |>
@@ -61,12 +61,6 @@ multi_scramble = function(qa_dt, tmp_dir) {
                                               word_df = words::words,
                                               FUN.VALUE = "blah"),
                 reembed_ground_truth = answer)][]
-
-
-    fwrite(qa_dt,
-           file = fs::path(tmp_dir, 'scrambled', ext = "tsv"),
-           quote = TRUE,
-           sep = "\t")
 
     qa_dt
 }

@@ -4,18 +4,12 @@
 \alias{stransevalr}
 \title{Evaluate model responses against a "ground-truth" answer}
 \usage{
-stransevalr(
-  input,
-  sent_trans_model = "multi-qa-MiniLM-L6-cos-v1",
-  tmp_dir = NULL
-)
+stransevalr(input, sent_trans_model = "multi-qa-MiniLM-L6-cos-v1")
 }
 \arguments{
 \item{input}{an input data frame or path to tsv}
 
 \item{sent_trans_model}{hugging face sentence transformer model string}
-
-\item{tmp_dir}{path to directory for intermediate results}
 }
 \description{
 Starting with an input set of questions, answers, and model
@@ -23,5 +17,5 @@ responses, use sentence transformers to compare the embedded model responses
 against the embedded "ground-truth" answer.
 }
 \details{
-If \code{tmp_dir} is not NULL, the intermediate files will be retained at the specified directory.
+If \code{sent_trans_model} has not been run before, it should download it from huggingface as needed.
 }
