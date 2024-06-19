@@ -16,6 +16,7 @@ Imports:
     words
 Suggests: 
     ggplot2,
+    pheatmap,
     testthat (>= 3.0.0),
     tibble
 RoxygenNote: 7.3.1
