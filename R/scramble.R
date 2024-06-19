@@ -38,13 +38,19 @@ sample_n_char = function(baseline, word_df) {
     paste0(word_vec[1:i], collapse = " ")
 }
 
-multi_scramble = function(qa_dt) {
-
+multi_scramble = function(qa_dt, verbose) {
+    
+    force(qa_dt)
+    
+    if (verbose) cli::cli_alert_info("Scrambling input.")
+    
     resp_word_df = qa_dt$answer |>
         paste0(collapse = " ") |>
         strsplit(split = " ") |>
         getElement(1) |>
         data.table(word = _)
+    
+    if (verbose) cli::cli_alert("Detected {unique(nrow(resp_word_df))} unique words across all provided answers.")
 
     qa_dt[,`:=`(scrambled_answer = vapply(answer,
                                           scramble,

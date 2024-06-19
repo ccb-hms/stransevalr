@@ -21,6 +21,5 @@ Suggests:
     testthat (>= 3.0.0),
     tibble
 RoxygenNote: 7.3.1
-Authors@R: 
-    person("Andrew", "Ghazi", role = c("aut", "cre"))
+Authors@R: person("Andrew", "Ghazi", role = c("aut", "cre"), email = "andrew_ghazi@hms.harvard.edu")
 Config/testthat/edition: 3

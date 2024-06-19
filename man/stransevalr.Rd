@@ -4,12 +4,18 @@
 \alias{stransevalr}
 \title{Evaluate model responses against a "ground-truth" answer}
 \usage{
-stransevalr(input, sent_trans_model = "multi-qa-MiniLM-L6-cos-v1")
+stransevalr(
+  input,
+  sent_trans_model = "multi-qa-MiniLM-L6-cos-v1",
+  verbose = TRUE
+)
 }
 \arguments{
 \item{input}{an input data frame or path to tsv}
 
 \item{sent_trans_model}{hugging face sentence transformer model string}
+
+\item{verbose}{logical indicating whether to print informative messages}
 }
 \description{
 Starting with an input set of questions, answers, and model

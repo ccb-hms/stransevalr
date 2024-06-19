@@ -16,11 +16,12 @@ safely_check_for_gpu = function(x, call = rlang::caller_env()) {
 # }
 
 run_sent_trans = function(scramble_dt, 
-                          model_name) {
+                          model_name, 
+                          verbose) {
     
     # setwd("~/stransevalr")
     # library(reticulate)
-    # use_virtualenv("~/pyenv/sntenv")
+    # use_virtualenv("~/pyenv/sntenv/")
     # devtools::load_all()
     # options(datatable.print.trunc.cols = TRUE)
     # input = "~/bioc_ai/data/correct_fmt.tsv"
@@ -28,12 +29,22 @@ run_sent_trans = function(scramble_dt,
     # scramble_dt = input |>
     #     read_input() |>
     #     multi_scramble()
-
+  
+    force(scramble_dt)
+    
+    if (verbose) cli::cli_alert("Checking for GPU availability...")
+  
     dev_name = safely_check_for_gpu(0)
+  
+    if (verbose) cli::cli_alert_success("Found GPU: {dev_name} !")
     
     device = torch$device("cuda")
     
+    if (verbose) cli::cli_alert_info("Loading sentence transformer model...")
+    
     model = sentence_transformers$SentenceTransformer(model_name)
+    
+    if (verbose) cli::cli_alert_info("Embedding answers and model responses...")
     
     scramble_pd = r_to_py(scramble_dt)
     
@@ -55,13 +66,17 @@ cosine_sim = function(model_embeds, ans_embeds) {
     rowSums(model_embeds * ans_embeds) / (sqrt(rowSums(ans_embeds^2)) * sqrt(rowSums(model_embeds^2)))
 }
 
-eval_cos_sim = function(emb_dt) {
+eval_cos_sim = function(emb_dt, verbose) {
     
+    force(emb_dt)
+  
+    if (verbose) cli::cli_alert_info("Computing cosine similarities...")
+  
     grd_ans = emb_dt[m == "reembed_ground_truth"]$res[[1]]
     
     emb_dt[, cosine_sims := lapply(res, cosine_sim, ans_embeds = grd_ans)]
     
-    emb_dt
+    emb_dt[]
 }
 
 #' Evaluate model responses against a "ground-truth" answer
@@ -71,19 +86,23 @@ eval_cos_sim = function(emb_dt) {
 #'
 #' @param input an input data frame or path to tsv
 #' @param sent_trans_model hugging face sentence transformer model string
+#' @param verbose logical indicating whether to print informative messages
 #'
 #' @details
 #' If \code{sent_trans_model} has not been run before, it should download it from huggingface as needed.
 #'
 #' @export
 stransevalr = function(input,
-                       sent_trans_model = 'multi-qa-MiniLM-L6-cos-v1') {
+                       sent_trans_model = 'multi-qa-MiniLM-L6-cos-v1', 
+                       verbose = TRUE) {
 
-    res = input                          |>
-        read_input()                     |>
-        multi_scramble()                 |>
-        run_sent_trans(sent_trans_model) |>
-        eval_cos_sim()
+    res = input                                   |>
+        read_input(verbose)                       |>
+        multi_scramble(verbose)                   |>
+        run_sent_trans(sent_trans_model, verbose) |>
+        eval_cos_sim(verbose)
+    
+    if (verbose) cli::cli_alert_success("Done!")
 
     res
 }

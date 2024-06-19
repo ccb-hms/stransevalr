@@ -7,13 +7,17 @@ read_type_helper = function(input, call = rlang::caller_env()) {
 
 }
 
-read_cols_helper = function(input, call = rlang::caller_env()) {
-
-    test_read = if (is(input, "character") && fs::file_exists(input) && tools::file_ext(input) == "tsv") {
+get_test_read = function(input) {
+    if (is(input, "character") && fs::file_exists(input) && tools::file_ext(input) == "tsv") {
         fread(input, sep = "\t", nrows = 1)
     } else {
         input[1,]
     }
+}
+
+read_cols_helper = function(input, call = rlang::caller_env()) {
+
+    test_read = get_test_read(input)
 
     col_names = colnames(test_read)
 
@@ -34,12 +38,16 @@ read_cols_helper = function(input, call = rlang::caller_env()) {
     cli::cli_alert("Detected response columns: {.val {tail(col_names, -2)}}")
 }
 
-read_input = function(input) {
-
+read_input = function(input, verbose) {
+    
+    force(input) # to make piped messages print at the right time
+    
     read_type_helper(input)
 
     read_cols_helper(input)
 
+    if (verbose) cli::cli_alert_info("Reading input.")
+        
     if (is.data.table(input)) return(input)
 
     if (is.data.frame(input)) return(as.data.table(input))
