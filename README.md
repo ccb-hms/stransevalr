@@ -50,7 +50,7 @@ if (dir.exists(env_dir)) {
     # ^ If this fails, you probably don't have the python 3.10.11 module loaded
     
     virtualenv_install(env_dir, 
-                       packages = c("cuda-python==12.1.0", "torch==2.2.2", "numpy==1.26.4"),
+                       packages = c("numpy==1.26.4", "cuda-python==12.1.0", "torch==2.2.2"),
                        pip_options = c("--upgrade", "--force-reinstall"))
     
     virtualenv_install(env_dir, 
@@ -58,7 +58,8 @@ if (dir.exists(env_dir)) {
 }
 ```
 
-`stransevalr` in and of itself is pretty light on the R front:
+`stransevalr` in and of itself is pretty light on the R front outside of
+reticulate:
 
 ![](man/figs/deps.png)
 
@@ -99,6 +100,28 @@ To run the evaluation you hand the input file to `stransevalr()`:
 input = system.file("extdata", "correct_fmt.tsv", package = "stransevalr")
 
 res = stransevalr(input)
+
+res |> tibble::as_tibble()
 ```
 
+    # A tibble: 7 × 3
+      m                          res              cosine_sims
+      <chr>                      <list>           <list>     
+    1 Response_Azure_Bioc_RAG    <dbl [10 × 384]> <dbl [10]> 
+    2 Response_Azure_GPT4_Temp0  <dbl [10 × 384]> <dbl [10]> 
+    3 scrambled_answer           <dbl [10 × 384]> <dbl [10]> 
+    4 scrambled_combined_answers <dbl [10 × 384]> <dbl [10]> 
+    5 scrabble_match_nword       <dbl [10 × 384]> <dbl [10]> 
+    6 scrabble_match_nchar       <dbl [10 × 384]> <dbl [10]> 
+    7 reembed_ground_truth       <dbl [10 × 384]> <dbl [10]> 
+
 There are functions for creating the bar and dot/boxplots as well:
+
+``` r
+
+p1 = plot_cos_sim_bars(res)
+p2 = plot_cos_sim_boxes(res)
+
+ggsave(p1, filename = "~/p1.png", w = 9, h = 7)
+ggsave(p2, filename = "~/p2.png", w = 9, h = 7)
+```
