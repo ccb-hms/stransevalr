@@ -9,7 +9,6 @@ LazyData: true
 Imports: 
     cli,
     data.table,
-    fs,
     reticulate,
     rlang,
     tools,

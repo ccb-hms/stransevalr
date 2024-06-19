@@ -21,10 +21,16 @@ remotes::install_github("ccb-hms/stransevalr")
 
 ## Example
 
+I’ve been using these modules on O2:
+
+    module load gcc/9.2.0 R/4.4.0 cmake/3.14.1 cuda/12.1 python/3.10.11
+
 This is a basic example which shows you how to create the virtual
 environment with reticulate if needed, then analyze an input
 question-answer-response file. This code block will create the virtual
-environment for you if it doesn’t exist or set it to be used if it does:
+environment for you if it doesn’t exist or set it to be used if it does.
+I tried to cut it down as much as possible but these four python
+packages have ~50 dependencies which take forever to install :(
 
 ``` r
 library(reticulate)
@@ -39,24 +45,32 @@ if (dir.exists(env_dir)) {
   
 } else {
   
-    virtualenv_create(env_dir)
+    virtualenv_create(env_dir,
+                      python = "/n/app/python/3.10.11.conda/bin/python")
+    # ^ If this fails, you probably don't have the python 3.10.11 module loaded
     
     virtualenv_install(env_dir, 
-                       packages = c("cuda-python==12.1.0", "torch==2.2.2"),
+                       packages = c("cuda-python==12.1.0", "torch==2.2.2", "numpy==1.26.4"),
                        pip_options = c("--upgrade", "--force-reinstall"))
     
     virtualenv_install(env_dir, 
-                       packages = c("pathlib", "pandas", "transformers", "numpy", "sentence_transformers"))
+                       packages = c("pandas", "sentence_transformers"))
 }
 ```
 
-The first column must be named `question`, the seconde must be `answer`,
+`stransevalr` in and of itself is pretty light on the R front:
+
+![](man/figs/deps.png)
+
+The first column must be named `question`, the second must be `answer`,
 and the remaining columns should have names indicating the model they
 came from e.g. `llama_70b_rag`:
 
 ``` r
 library(data.table)
 library(stransevalr)
+
+options(datatable.print.trunc.cols = TRUE)
 
 # show input file
 system.file("extdata", "correct_fmt.tsv", package = "stransevalr") |> 
@@ -79,14 +93,12 @@ system.file("extdata", "correct_fmt.tsv", package = "stransevalr") |>
     10 "How do I merge a list … "Merg… "You can merge a list… "To merge a list of G…
     # ℹ abbreviated names: ¹Response_Azure_Bioc_RAG, ²Response_Azure_GPT4_Temp0
 
+To run the evaluation you hand the input file to `stransevalr()`:
 
-    # show scrambling
+``` r
+input = system.file("extdata", "correct_fmt.tsv", package = "stransevalr")
 
-    # show evalutating with strans
+res = stransevalr(input)
+```
 
-    # show computing cosine similarities
-
-    # show plotting
-
-    # run strans
-    ## basic example code
+There are functions for creating the bar and dot/boxplots as well:

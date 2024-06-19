@@ -1,6 +1,6 @@
 read_type_helper = function(input, call = rlang::caller_env()) {
     is_df_or_tsv = is(input, "data.frame") ||
-        (is(input, "character") && fs::file_exists(input) && tools::file_ext(input) == "tsv")
+        (is(input, "character") && file.exists(input) && tools::file_ext(input) == "tsv")
 
     if (!is_df_or_tsv) cli::cli_abort("{.var input} must be a data.frame or path to a tsv, you supplied a {.cls {class(input)}}",
                                       call = call)
@@ -8,7 +8,7 @@ read_type_helper = function(input, call = rlang::caller_env()) {
 }
 
 get_test_read = function(input) {
-    if (is(input, "character") && fs::file_exists(input) && tools::file_ext(input) == "tsv") {
+    if (is(input, "character") && file.exists(input) && tools::file_ext(input) == "tsv") {
         fread(input, sep = "\t", nrows = 1)
     } else {
         input[1,]
