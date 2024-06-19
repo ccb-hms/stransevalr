@@ -53,7 +53,7 @@ if (dir.exists(env_dir)) {
                        pip_options = c("--upgrade", "--force-reinstall"))
     
     virtualenv_install(env_dir, 
-                       packages = c("pathlib", "polars", "transformers", "numpy", "sentence_transformers"))
+                       packages = c("pathlib", "pandas", "transformers", "numpy", "sentence_transformers"))
 }
 
 # show input file
