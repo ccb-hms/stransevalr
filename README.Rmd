@@ -52,6 +52,8 @@ if (dir.exists(env_dir)) {
   
 } else {
   
+    strt = Sys.time()
+    
     virtualenv_create(env_dir,
                       python = "/n/app/python/3.10.11.conda/bin/python")
     # ^ If this fails, you probably don't have the python 3.10.11 module loaded
@@ -62,6 +64,10 @@ if (dir.exists(env_dir)) {
     
     virtualenv_install(env_dir, 
                        packages = c("pandas", "sentence_transformers"))
+    
+    fin = Sys.time()
+    
+    print(fin - strt)
 }
 
 ```
