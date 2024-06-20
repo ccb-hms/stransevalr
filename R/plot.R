@@ -54,15 +54,16 @@ plot_cos_sim_boxes = function(res_dt) {
     plot_input = prep_plot_input(res_dt)
     
     plot_input |> 
-        ggplot(aes(m, cos_sim)) +
-        geom_boxplot(fill = rgb(0,0,0,0),
+        ggplot2::ggplot(ggplot2::aes(m, cos_sim)) +
+        ggplot2::geom_boxplot(fill = rgb(0,0,0,0),
                      color = "grey10", outlier.shape = NA) + 
-        geom_point(aes(color = QID,
+        ggplot2::geom_point(ggplot2::aes(color = QID,
                        group = QID),
-                   position = position_dodge2(width =  .3),
+                   position = ggplot2::position_dodge2(width =  .3),
                    size = 3) + 
-        scale_color_manual(values = pals::cols25()) + 
-        scale_y_continuous(limits = c(-.05, 1.05), breaks = seq(0, 1, by = .2)) + 
-        theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 12)) + 
-        labs(x = NULL, color = NULL)
+        ggplot2::theme_bw() + 
+        ggplot2::scale_color_manual(values = pals::cols25()) + 
+        ggplot2::scale_y_continuous(limits = c(-.05, 1.05), breaks = seq(0, 1, by = .2)) + 
+        ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 12)) + 
+        ggplot2::labs(x = NULL, color = NULL)
 }
