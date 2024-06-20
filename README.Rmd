@@ -132,6 +132,25 @@ res |> tibble::as_tibble()
 7 reembed_ground_truth       <dbl [10 × 384]> <dbl [10]> 
 ```
 
+The embeddings and cosine similarities are in nested list columns. You can unnest the similarities and add an index with a bit of data.table: 
+
+```{r eval=FALSE}
+res[,.(m, cosine_sims)][,.(cos_sim =  unlist(cosine_sims)), by = m][, q_i := 1:.N , by = m] |> head()
+```
+
+```
+                         m   cos_sim   q_i
+                    <char>     <num> <int>
+1: Response_Azure_Bioc_RAG 0.8001171     1
+2: Response_Azure_Bioc_RAG 0.7180428     2
+3: Response_Azure_Bioc_RAG 0.4934007     3
+4: Response_Azure_Bioc_RAG 0.7712072     4
+5: Response_Azure_Bioc_RAG 0.7607350     5
+6: Response_Azure_Bioc_RAG 0.6629975     6
+
+```
+
+
 There are functions for creating the bar and dot/boxplots as well:
 
 ```{r eval=FALSE}
