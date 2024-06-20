@@ -56,7 +56,7 @@ run_sent_trans = function(scramble_dt,
     to_embed = colnames(scramble_dt) |> tail(-2) 
     
     emb_dt = data.table(m = to_embed,
-                        res = lapply(seq_along(to_embed),
+                        emb_mat = lapply(seq_along(to_embed),
                                      \(i) model$encode(scramble_pd[[to_embed[i]]]$tolist())))
     
     emb_dt
@@ -72,9 +72,9 @@ eval_cos_sim = function(emb_dt, verbose) {
   
     if (verbose) cli::cli_alert_info("Computing cosine similarities...")
   
-    grd_ans = emb_dt[m == "reembed_ground_truth"]$res[[1]]
+    grd_ans = emb_dt[m == "reembed_ground_truth"]$emb_mat[[1]]
     
-    emb_dt[, cosine_sims := lapply(res, cosine_sim, ans_embeds = grd_ans)]
+    emb_dt[, cosine_sims := lapply(emb_mat, cosine_sim, ans_embeds = grd_ans)]
     
     emb_dt[]
 }
