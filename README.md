@@ -148,3 +148,7 @@ p2 = plot_cos_sim_boxes(res)
 ggsave(p1, filename = "~/p1.png", w = 12, h = 7)
 ggsave(p2, filename = "~/p2.png", w = 12, h = 7)
 ```
+
+![](man/figs/p1.png)
+
+![](man/figs/p2.png)
