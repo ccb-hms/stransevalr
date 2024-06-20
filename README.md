@@ -9,17 +9,7 @@
 The goal of stransevalr is to use `reticulate` to evaluate
 question-answer pairs with sentence transformers in R.
 
-## Installation
-
-You can install the development version of stransevalr from
-[GitHub](https://github.com/) with:
-
-``` r
-# install.packages("remotes")
-remotes::install_github("ccb-hms/stransevalr")
-```
-
-## Example
+## Installation and Usage
 
 I’ve been using these modules on O2:
 
@@ -62,6 +52,14 @@ if (dir.exists(env_dir)) {
     
     print(fin - strt)
 }
+```
+
+Exit R, activate the venv, then start R and you can install the package
+from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("ccb-hms/stransevalr")
 ```
 
 `stransevalr` in and of itself is pretty light on the R front outside of
