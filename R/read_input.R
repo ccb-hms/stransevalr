@@ -1,4 +1,4 @@
-read_type_helper = function(input, call = rlang::caller_env()) {
+read_type_helper = function(input, verbose, call = rlang::caller_env()) {
     is_df_or_tsv = is(input, "data.frame") ||
         (is(input, "character") && file.exists(input) && tools::file_ext(input) == "tsv")
 
@@ -15,7 +15,7 @@ get_test_read = function(input) {
     }
 }
 
-read_cols_helper = function(input, call = rlang::caller_env()) {
+read_cols_helper = function(input, verbose, call = rlang::caller_env()) {
 
     test_read = get_test_read(input)
 
@@ -35,18 +35,18 @@ read_cols_helper = function(input, call = rlang::caller_env()) {
         cli::cli_abort("Non-character columns detected: {.val {names(col_classes)[col_classes != \"character\"]}} {?is/are} type{?s} {.cls {col_classes[col_classes != \"character\"]}}")
     }
 
-    cli::cli_alert("Detected response columns: {.val {tail(col_names, -2)}}")
+    if (verbose) cli::cli_alert("Detected response columns: {.val {tail(col_names, -2)}}")
 }
 
 read_input = function(input, verbose) {
     
     force(input) # to make piped messages print at the right time
     
-    read_type_helper(input)
-
-    read_cols_helper(input)
-
     if (verbose) cli::cli_alert_info("Reading input.")
+    
+    read_type_helper(input, verbose)
+
+    read_cols_helper(input, verbose)
         
     if (is.data.table(input)) return(input)
 
