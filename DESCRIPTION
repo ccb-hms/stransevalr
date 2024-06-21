@@ -6,7 +6,7 @@ Description: Use sentence transformers to evaluate model responses in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: R (>=4.1)
+Depends: R (>= 4.1)
 Imports: 
     cli,
     data.table,
