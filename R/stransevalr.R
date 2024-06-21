@@ -92,10 +92,10 @@ eval_sim = function(emb_dt, sim_fun, verbose) {
     grd_ans = emb_dt[m == "reembed_ground_truth"]$emb_mat[[1]]
     
     if (is.null(sim_fun)) {
-      cli::cli_alert("No user-specified similarity function provided, defaulting to cosine similarity.")
+      if (verbose) cli::cli_alert("No user-specified similarity function provided, defaulting to cosine similarity.")
       emb_dt[, sims := lapply(emb_mat, cosine_sim, ans_embeds = grd_ans)]
     } else {
-      cli::cli_alert("Applying user-specified similarity function to sentence transformer embeddings.")
+      if (verbose) cli::cli_alert("Applying user-specified similarity function to sentence transformer embeddings.")
       emb_dt[, sims := lapply(emb_mat, apply_user_sim, ans_embeds = grd_ans, sim_fun = sim_fun)]
     }
     

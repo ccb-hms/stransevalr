@@ -75,7 +75,7 @@ came from e.g. `llama_70b_rag`:
 library(data.table)
 library(stransevalr)
 
-options(datatable.print.trunc.cols = TRUE)
+options(datatable.print.trunc.cols = TRUE, digits = 3)
 
 # show input file
 system.file("extdata", "correct_fmt.tsv", package = "stransevalr") |> 

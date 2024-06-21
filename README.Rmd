@@ -83,7 +83,7 @@ The first column must be named `question`, the second must be `answer`, and the 
 library(data.table)
 library(stransevalr)
 
-options(datatable.print.trunc.cols = TRUE)
+options(datatable.print.trunc.cols = TRUE, digits = 3)
 
 # show input file
 system.file("extdata", "correct_fmt.tsv", package = "stransevalr") |> 
