@@ -7,6 +7,7 @@
 stransevalr(
   input,
   sent_trans_model = "multi-qa-MiniLM-L6-cos-v1",
+  sim_fun = NULL,
   verbose = TRUE
 )
 }
@@ -15,13 +16,23 @@ stransevalr(
 
 \item{sent_trans_model}{hugging face sentence transformer model string}
 
+\item{sim_fun}{an R function used to compute embedding similarity. If left at
+NULL, defaults to cosine similarity.}
+
 \item{verbose}{logical indicating whether to print informative messages}
+}
+\value{
+a data.table with the following columns:
+* m: the source model of the response (i.e. columns 3 and on in the input)
+* emb_mat: a nested list of the matrix embeddings of questions for the model
+* sims: a nested list of vectors of similarities using the designated similarity function.
 }
 \description{
 Starting with an input set of questions, answers, and model
-responses, use sentence transformers to compare the embedded model responses
-against the embedded "ground-truth" answer.
+  responses, use sentence transformers to compare the embedded model
+  responses against the embedded "ground-truth" answer.
 }
 \details{
-If \code{sent_trans_model} has not been run before, it should download it from huggingface as needed.
+If \code{sent_trans_model} has not been run before, it will download
+it from huggingface as needed.
 }
