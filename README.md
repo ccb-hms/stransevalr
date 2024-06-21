@@ -155,7 +155,6 @@ You can provide your own similarity function with the `sim_fun`
 argument:
 
 ``` r
-
 euc_dist = \(x,y) sqrt(sum((x - y)^2))
 
 res2 = stransevalr(input, sim_fun = euc_dist)
