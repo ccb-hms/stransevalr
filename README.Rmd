@@ -175,8 +175,6 @@ euc_dist = \(x,y) sqrt(sum((x - y)^2))
 
 res2 = stransevalr(input, sim_fun = euc_dist)
 
-res2 |> tibble::as_tibble()
-
 ```
 
 

@@ -150,3 +150,13 @@ ggsave(p2, filename = "~/p2.png", w = 12, h = 7)
 ![](man/figs/p1.png)
 
 ![](man/figs/p2.png)
+
+You can provide your own similarity function with the `sim_fun`
+argument:
+
+``` r
+
+euc_dist = \(x,y) sqrt(sum((x - y)^2))
+
+res2 = stransevalr(input, sim_fun = euc_dist)
+```
